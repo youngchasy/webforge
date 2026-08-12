@@ -1,0 +1,39 @@
+name: Bug report
+description: Report a reproducible WebForge problem
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: dropdown
+    id: os
+    attributes:
+      label: Operating system
+      options: [Windows x64, Linux x64, macOS Apple Silicon, macOS Intel, Other]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: WebForge version
+      placeholder: v1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the smallest reliable sequence that triggers the issue.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior / logs
+      render: shell
+    validations:
+      required: true
