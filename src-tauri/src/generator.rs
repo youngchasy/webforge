@@ -841,12 +841,31 @@ pub fn create_project(request: CreateProjectRequest) -> Result<CreatedProject, S
 
 #[cfg(test)]
 mod tests {
-    use super::{create_project_at, package_identifier, package_json, runtime_vite_config, validate_name, vite_config, CreateProjectRequest};
-    use std::{fs, time::{SystemTime, UNIX_EPOCH}};
+    use super::{
+        create_project_at,
+        package_identifier,
+        package_json,
+        runtime_vite_config,
+        validate_name,
+        vite_config,
+        CreateProjectRequest,
+    };
+
+    use std::{
+        fs,
+        sync::atomic::{AtomicU64, Ordering},
+    };
+
+    static NEXT_TEMP_DIR: AtomicU64 = AtomicU64::new(0);
 
     fn temp_dir() -> std::path::PathBuf {
-        let suffix = SystemTime::now().duration_since(UNIX_EPOCH).unwrap().as_nanos();
-        let path = std::env::temp_dir().join(format!("webforge-generator-{suffix}"));
+        let sequence = NEXT_TEMP_DIR.fetch_add(1, Ordering::Relaxed);
+
+        let path = std::env::temp_dir().join(format!(
+            "webforge-generator-{}-{sequence}",
+            std::process::id()
+        ));
+
         fs::create_dir_all(&path).unwrap();
         path
     }
