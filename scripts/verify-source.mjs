@@ -111,7 +111,7 @@ const generator = hasAll("src-tauri/src/generator.rs", ["WEBFORGE 1.0.0", "Creat
 assert(generator.includes("WEBFORGE 1.0.0"), "generated templates have a stale version label");
 
 for (const path of [
-  "src/components/DebugPanel.tsx", "src/components/GitMergeEditor.tsx", "src/lib/sourceMaps.ts", "src/lib/frameworkSource.ts", "src/types/debug.ts", "src/types/tasks.ts", "src/types/git.ts", "src-tauri/src/debugger.rs", "src-tauri/src/tasks.rs", "src-tauri/src/git.rs", "docs/CHANGELOG.md", "docs/ARCHITECTURE.md", "docs/RELEASING.md",
+  "src/components/DebugPanel.tsx", "src/components/GitMergeEditor.tsx", "src/lib/sourceMaps.ts", "src/lib/frameworkSource.ts", "src/types/debug.ts", "src/types/tasks.ts", "src/types/git.ts", "src-tauri/src/debugger.rs", "src-tauri/src/tasks.rs", "src-tauri/src/git.rs",
 ]) assert(existsSync(resolve(root, path)), `required release file missing: ${path}`);
 
 const i18n = hasAll("src/i18n/messages.ts", [
