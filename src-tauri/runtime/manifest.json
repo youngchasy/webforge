@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "prepared": false,
+  "nodeVersion": "24.19.0",
+  "npmBundled": true,
+  "target": null,
+  "platform": null,
+  "arch": null,
+  "artifact": null,
+  "sha256": null,
+  "source": "https://nodejs.org/download/release/v24.19.0/"
+}

@@ -1,0 +1,28 @@
+[package]
+name = "webforge"
+version = "1.0.0"
+description = "Cross-platform web development workbench"
+authors = ["WebForge contributors"]
+edition = "2021"
+
+[lib]
+name = "webforge_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.6.3", features = [] }
+
+[dependencies]
+tauri = { version = "2.11.5", features = [] }
+tauri-plugin-dialog = "2.7.2"
+tauri-plugin-updater = "2.10.1"
+portable-pty = "0.9.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+regex = "1"
+notify = "8.2.0"
+url = "2"
+tungstenite = "0.30.0"
+keyring = "3.6.2"
+
+semver = "1"
