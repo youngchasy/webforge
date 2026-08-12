@@ -1,0 +1,39 @@
+{
+  "name": "webforge",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 1420",
+    "build": "tsc && vite build",
+    "preview": "vite preview --port 1420",
+    "tauri": "tauri",
+    "check": "tsc --noEmit",
+    "test:rust": "cargo test --manifest-path src-tauri/Cargo.toml",
+    "verify:source": "node scripts/verify-source.mjs",
+    "release:verify": "node scripts/verify-source.mjs && npm run check && npm run build && npm run production:verify && npm run test:rust",
+    "runtime:prepare": "node scripts/prepare-node-runtime.mjs",
+    "production:verify": "node scripts/production-validate.mjs",
+    "release:tag": "node scripts/verify-release-tag.mjs",
+    "release:manifest": "node scripts/release-manifest.mjs"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/plugin-dialog": "^2.7.2",
+    "monaco-editor": "0.55.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "@xterm/xterm": "6.0.0",
+    "@xterm/addon-fit": "0.11.0",
+    "@xterm/addon-search": "0.16.0",
+    "source-map-js": "1.2.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.11.4",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^6.0.5",
+    "typescript": "^5.8.0",
+    "vite": "^8.2.1"
+  }
+}
