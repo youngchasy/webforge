@@ -75,8 +75,22 @@ if (target.artifact.endsWith(".zip")) {
 const dist = join(extractDir, target.folder);
 await rm(outDir, { recursive: true, force: true });
 await mkdir(join(outDir, "node_modules"), { recursive: true });
-await cp(join(dist, target.node), join(outDir, target.os === "windows" ? "node.exe" : "node"));
-await cp(join(dist, "node_modules", "npm"), join(outDir, "node_modules", "npm"), { recursive: true });
+
+await cp(
+  join(dist, target.node),
+  join(outDir, target.os === "windows" ? "node.exe" : "node")
+);
+
+const npmSource =
+  target.os === "windows"
+    ? join(dist, "node_modules", "npm")
+    : join(dist, "lib", "node_modules", "npm");
+
+await cp(
+  npmSource,
+  join(outDir, "node_modules", "npm"),
+  { recursive: true }
+);
 if (target.os === "windows") {
   await cp(join(dist, "npm.cmd"), join(outDir, "npm.cmd"));
   await cp(join(dist, "npx.cmd"), join(outDir, "npx.cmd"));
