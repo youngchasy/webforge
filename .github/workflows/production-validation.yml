@@ -1,0 +1,59 @@
+name: Production validation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  native-smoke:
+    name: Native smoke · ${{ matrix.label }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Windows x64
+            os: windows-latest
+            target: ""
+            runtime: windows-x64
+          - label: Linux x64
+            os: ubuntu-22.04
+            target: ""
+            runtime: linux-x64
+          - label: macOS Apple Silicon
+            os: macos-latest
+            target: ""
+            runtime: macos-arm64
+          - label: macOS Intel
+            os: macos-15-intel
+            target: ""
+            runtime: macos-x64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Add Rust target
+        if: matrix.target != ''
+        run: rustup target add ${{ matrix.target }}
+      - name: Linux Tauri dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev
+      - run: npm ci
+      - run: npm run verify:source
+      - run: npm run check
+      - run: npm run test:rust
+      - run: npm run build
+      - run: npm run production:verify
+      - run: node scripts/prepare-node-runtime.mjs --target ${{ matrix.runtime }}
+      - name: Native release binary smoke build
+        shell: bash
+        run: |
+          if [ -n "${{ matrix.target }}" ]; then
+            npm run tauri -- build --no-bundle --target "${{ matrix.target }}"
+          else
+            npm run tauri -- build --no-bundle
+          fi
