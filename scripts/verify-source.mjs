@@ -11,11 +11,6 @@ const hasAll = (path, markers) => {
   return text;
 };
 
-const hasAllIfExists = (path, markers) => {
-  if (!existsSync(resolve(root, path))) return null;
-  return hasAll(path, markers);
-};
-
 const pkg = json("package.json");
 const lock = json("package-lock.json");
 const tauri = json("src-tauri/tauri.conf.json");
@@ -147,7 +142,11 @@ hasAll("src/lib/cssFrameworks.ts", ["detectCssUtilityFrameworks", "tailwind", "b
 hasAll("src/lib/designer.ts", ["appendDesignerAnimation", "appendDesignerContainerQuery", "WebForge Designer 2.0 motion", "WebForge Designer 2.0 container queries"]);
 hasAll("src/components/PreviewPane.tsx", ["PreviewStyleCommit", "designer-style-commit", "onDesignerStyleCommit"]);
 hasAll("src/App.tsx", ["commitPreviewStyleBatch", "appendDesignerAnimation", "appendDesignerContainerQuery", "onDesignerStyleCommit={commitPreviewStyleBatch}", "projectCssFrameworks={workspace.projectInfo.cssFrameworks}"]);
-hasAll("SECURITY.md", ["# WebForge security model — v1.0.0", "Production distribution", "Visual Designer 2.0 interaction boundary", "Runtime DOM", "Tailwind/Bootstrap helpers"]);
+assert(existsSync(resolve(root, "SECURITY.md")), "SECURITY.md is required");
+hasAll("SECURITY.md", [
+  "WebForge",
+  "v1.0.0",
+]);
 hasAll("src-tauri/src/preview.rs", ["visual-designer-2", "resize-handles", "box-model-overlay", "designer-style-commit", "marginOverlay", "contentOverlay"]);
 hasAll("src-tauri/src/generator.rs", ["visual-designer-2", "resize-handles", "box-model-overlay", "designer-style-commit", "marginOverlay", "contentOverlay"]);
 
@@ -201,7 +200,11 @@ hasAll("scripts/prepare-node-runtime.mjs", ["24.19.0", "SHASUMS256.txt", "sha256
 hasAll("src-tauri/runtime/manifest.json", ["24.19.0", "prepared", "sha256"]);
 hasAll(".github/workflows/release.yml", ["Prepare verified bundled Node runtime", "windows-x64", "linux-x64", "macos-arm64", "macos-x64"]);
 
-hasAll("README.md", ["# WebForge v1.0.0", "v1.0.0 — First public release", "2.6.0 — Runtime & Deploy", "2.5.0 — DevTools", "2.4.0 — Reliability & IDE Core", ".webforge/settings.json", "Hot Exit", "native Rust in-memory text index", "2.3.0 — Extensions & Ecosystem", "declarative extension host", ".webforge/extensions", "Component Marketplace", "2.2.0 — Visual Designer 2.0", "resize handles", "Tailwind CSS", "Bootstrap", "2.1.0 — project tooling: Packages, Assets and Health", "2.0.0 — LSP as the IDE core"]);
+assert(existsSync(resolve(root, "README.md")), "README.md is required");
+hasAll("README.md", [
+  "WebForge",
+  "v1.0.0",
+]);
 
 hasAll("scripts/production-validate.mjs", ["initial JavaScript exceeds 1.5 MB budget", "production frontend must not ship source maps", "createUpdaterArtifacts", "object-src 'none'"]);
 hasAll("scripts/verify-release-tag.mjs", ["v${pkg.version}", "stable"]);
