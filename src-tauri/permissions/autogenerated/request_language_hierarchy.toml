@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-request-language-hierarchy"
+description = "Enables the request_language_hierarchy command without any pre-configured scope."
+commands.allow = ["request_language_hierarchy"]
+
+[[permission]]
+identifier = "deny-request-language-hierarchy"
+description = "Denies the request_language_hierarchy command without any pre-configured scope."
+commands.deny = ["request_language_hierarchy"]

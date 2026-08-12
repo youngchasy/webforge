@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-rebuild-workspace-index"
+description = "Enables the rebuild_workspace_index command without any pre-configured scope."
+commands.allow = ["rebuild_workspace_index"]
+
+[[permission]]
+identifier = "deny-rebuild-workspace-index"
+description = "Denies the rebuild_workspace_index command without any pre-configured scope."
+commands.deny = ["rebuild_workspace_index"]

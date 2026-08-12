@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-start-language-server"
+description = "Enables the start_language_server command without any pre-configured scope."
+commands.allow = ["start_language_server"]
+
+[[permission]]
+identifier = "deny-start-language-server"
+description = "Denies the start_language_server command without any pre-configured scope."
+commands.deny = ["start_language_server"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-probe-language-servers"
+description = "Enables the probe_language_servers command without any pre-configured scope."
+commands.allow = ["probe_language_servers"]
+
+[[permission]]
+identifier = "deny-probe-language-servers"
+description = "Denies the probe_language_servers command without any pre-configured scope."
+commands.deny = ["probe_language_servers"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-poll-native-workspace-changes"
+description = "Enables the poll_native_workspace_changes command without any pre-configured scope."
+commands.allow = ["poll_native_workspace_changes"]
+
+[[permission]]
+identifier = "deny-poll-native-workspace-changes"
+description = "Denies the poll_native_workspace_changes command without any pre-configured scope."
+commands.deny = ["poll_native_workspace_changes"]

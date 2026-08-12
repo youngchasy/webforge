@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-rerun-failed-project-tests"
+description = "Enables the rerun_failed_project_tests command without any pre-configured scope."
+commands.allow = ["rerun_failed_project_tests"]
+
+[[permission]]
+identifier = "deny-rerun-failed-project-tests"
+description = "Denies the rerun_failed_project_tests command without any pre-configured scope."
+commands.deny = ["rerun_failed_project_tests"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-update-language-configuration"
+description = "Enables the update_language_configuration command without any pre-configured scope."
+commands.allow = ["update_language_configuration"]
+
+[[permission]]
+identifier = "deny-update-language-configuration"
+description = "Denies the update_language_configuration command without any pre-configured scope."
+commands.deny = ["update_language_configuration"]

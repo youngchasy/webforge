@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-refresh-language-diagnostics"
+description = "Enables the refresh_language_diagnostics command without any pre-configured scope."
+commands.allow = ["refresh_language_diagnostics"]
+
+[[permission]]
+identifier = "deny-refresh-language-diagnostics"
+description = "Denies the refresh_language_diagnostics command without any pre-configured scope."
+commands.deny = ["refresh_language_diagnostics"]

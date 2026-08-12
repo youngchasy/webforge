@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-preview-workspace-replace"
+description = "Enables the preview_workspace_replace command without any pre-configured scope."
+commands.allow = ["preview_workspace_replace"]
+
+[[permission]]
+identifier = "deny-preview-workspace-replace"
+description = "Denies the preview_workspace_replace command without any pre-configured scope."
+commands.deny = ["preview_workspace_replace"]

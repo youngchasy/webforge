@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-package-security-audit"
+description = "Enables the package_security_audit command without any pre-configured scope."
+commands.allow = ["package_security_audit"]
+
+[[permission]]
+identifier = "deny-package-security-audit"
+description = "Denies the package_security_audit command without any pre-configured scope."
+commands.deny = ["package_security_audit"]

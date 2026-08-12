@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-start-project-test-file"
+description = "Enables the start_project_test_file command without any pre-configured scope."
+commands.allow = ["start_project_test_file"]
+
+[[permission]]
+identifier = "deny-start-project-test-file"
+description = "Denies the start_project_test_file command without any pre-configured scope."
+commands.deny = ["start_project_test_file"]

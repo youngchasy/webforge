@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-stop-project-runtime"
+description = "Enables the stop_project_runtime command without any pre-configured scope."
+commands.allow = ["stop_project_runtime"]
+
+[[permission]]
+identifier = "deny-stop-project-runtime"
+description = "Denies the stop_project_runtime command without any pre-configured scope."
+commands.deny = ["stop_project_runtime"]

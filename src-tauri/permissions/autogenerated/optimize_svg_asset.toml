@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-optimize-svg-asset"
+description = "Enables the optimize_svg_asset command without any pre-configured scope."
+commands.allow = ["optimize_svg_asset"]
+
+[[permission]]
+identifier = "deny-optimize-svg-asset"
+description = "Denies the optimize_svg_asset command without any pre-configured scope."
+commands.deny = ["optimize_svg_asset"]

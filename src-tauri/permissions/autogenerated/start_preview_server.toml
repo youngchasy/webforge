@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-start-preview-server"
+description = "Enables the start_preview_server command without any pre-configured scope."
+commands.allow = ["start_preview_server"]
+
+[[permission]]
+identifier = "deny-start-preview-server"
+description = "Denies the start_preview_server command without any pre-configured scope."
+commands.deny = ["start_preview_server"]

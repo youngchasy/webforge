@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-load-project-language-files"
+description = "Enables the load_project_language_files command without any pre-configured scope."
+commands.allow = ["load_project_language_files"]
+
+[[permission]]
+identifier = "deny-load-project-language-files"
+description = "Denies the load_project_language_files command without any pre-configured scope."
+commands.deny = ["load_project_language_files"]

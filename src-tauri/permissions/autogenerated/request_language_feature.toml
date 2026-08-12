@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-request-language-feature"
+description = "Enables the request_language_feature command without any pre-configured scope."
+commands.allow = ["request_language_feature"]
+
+[[permission]]
+identifier = "deny-request-language-feature"
+description = "Denies the request_language_feature command without any pre-configured scope."
+commands.deny = ["request_language_feature"]

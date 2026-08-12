@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-poll-project-task-logs"
+description = "Enables the poll_project_task_logs command without any pre-configured scope."
+commands.allow = ["poll_project_task_logs"]
+
+[[permission]]
+identifier = "deny-poll-project-task-logs"
+description = "Denies the poll_project_task_logs command without any pre-configured scope."
+commands.deny = ["poll_project_task_logs"]
