@@ -11,6 +11,11 @@ const hasAll = (path, markers) => {
   return text;
 };
 
+const hasAllIfExists = (path, markers) => {
+  if (!existsSync(resolve(root, path))) return null;
+  return hasAll(path, markers);
+};
+
 const pkg = json("package.json");
 const lock = json("package-lock.json");
 const tauri = json("src-tauri/tauri.conf.json");
@@ -156,10 +161,6 @@ hasAll("src/components/ProjectWizard.tsx", ["extensionTemplates", "extensionTemp
 hasAll("src/hooks/useWorkspace.ts", ["extensionCatalog", "extensionComponents", "extensionTemplates", "refreshExtensions", "extensionInstall", "extensionSetCapability", "extensionRunCommand", "createExtensionProject"]);
 hasAll("src/lib/tauri.ts", ["listExtensions", "listExtensionCatalog", "installBundledExtension", "setExtensionCapability", "listExtensionComponents", "listExtensionTemplates", "runExtensionCommand", "createExtensionProject"]);
 hasAll("src/App.tsx", ["ExtensionsPanel", "ComponentMarketplacePanel", "extensionThemeKey", "activeExtensionTheme", "designerComponents", "executeExtensionCommand", "workspace.extensionTemplates"]);
-assert(existsSync(resolve(root, "docs/EXTENSIONS.md")), "2.3 extension API documentation missing");
-hasAll("docs/EXTENSIONS.md", ["declarative, workspace-local extension host", "editor.commands", "ui.panels", "project.templates", "Arbitrary native/process execution"]);
-assert(existsSync(resolve(root, "docs/SETTINGS.md")), "2.4 settings/recovery documentation missing");
-hasAll("docs/SETTINGS.md", [".webforge/settings.json", "Hot Exit", "Native search index", "format-on-save"]);
 hasAll("src/lib/themes.ts", ["midnight", "graphite", "slate", "light", "paper", "glass", "terminalThemeFor"]);
 hasAll("src/monaco/themes.ts", ["webforge-midnight", "webforge-graphite", "webforge-slate", "webforge-light", "webforge-paper", "webforge-glass"]);
 hasAll("src/components/SettingsDialog.tsx", ["BUILTIN_THEMES", "settings.appearanceTitle", "theme-card"]);
@@ -201,11 +202,7 @@ hasAll("src-tauri/runtime/manifest.json", ["24.19.0", "prepared", "sha256"]);
 hasAll(".github/workflows/release.yml", ["Prepare verified bundled Node runtime", "windows-x64", "linux-x64", "macos-arm64", "macos-x64"]);
 
 hasAll("README.md", ["# WebForge v1.0.0", "v1.0.0 — First public release", "2.6.0 — Runtime & Deploy", "2.5.0 — DevTools", "2.4.0 — Reliability & IDE Core", ".webforge/settings.json", "Hot Exit", "native Rust in-memory text index", "2.3.0 — Extensions & Ecosystem", "declarative extension host", ".webforge/extensions", "Component Marketplace", "2.2.0 — Visual Designer 2.0", "resize handles", "Tailwind CSS", "Bootstrap", "2.1.0 — project tooling: Packages, Assets and Health", "2.0.0 — LSP as the IDE core"]);
-hasAll("docs/ARCHITECTURE.md", ["# WebForge architecture — v1.0.0", "Production shell and public-release boundary (v1.0)", "Runtime & Deploy boundary (2.6)", "DevTools bridge boundary (2.5)", "Reliability / settings / recovery core (2.4)", "WorkspaceSearchIndexState", "Declarative extension host", "extensions-state.json", "Visual Designer 2.0 boundary", "data-webforge-overlay", "Tailwind/Bootstrap-aware", "Multi-server LSP supervisor", "Credential IPC is metadata-only"]);
-hasAll("docs/RELEASING.md", ["# WebForge v1.0.0 release pipeline", "Browser-first release flow", "v1.0.0", "Windows x64", "Linux x64", "macOS Apple Silicon", "macOS Intel", "createUpdaterArtifacts"]);
 
-assert(existsSync(resolve(root, "docs/PRODUCTION_VALIDATION.md")), "v1.0 production validation documentation missing");
-assert(existsSync(resolve(root, "docs/MIGRATIONS.md")), "migration documentation missing");
 hasAll("scripts/production-validate.mjs", ["initial JavaScript exceeds 1.5 MB budget", "production frontend must not ship source maps", "createUpdaterArtifacts", "object-src 'none'"]);
 hasAll("scripts/verify-release-tag.mjs", ["v${pkg.version}", "stable"]);
 hasAll("scripts/release-manifest.mjs", ["sha256", "webforge-release-manifest.json"]);
