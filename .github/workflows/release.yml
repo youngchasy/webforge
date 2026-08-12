@@ -1,0 +1,231 @@
+name: Build release installers
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: webforge-release-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    name: Release preflight
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out the published release tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Linux Tauri dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl wget file \
+            libxdo-dev \
+            libssl-dev \
+            libdbus-1-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            patchelf xdg-utils
+
+      - name: Validate release tag
+        run: npm run release:tag -- --tag="${{ github.event.release.tag_name }}"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify source invariants
+        run: npm run verify:source
+
+      - name: TypeScript check
+        run: npm run check
+
+      - name: Rust tests
+        run: npm run test:rust
+
+      - name: Production frontend build
+        run: npm run build
+
+      - name: Production security/bundle validation
+        run: npm run production:verify
+
+  build:
+    name: ${{ matrix.label }}
+    needs: preflight
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - label: Windows x64 · NSIS
+            os: windows-latest
+            runtime: windows-x64
+            bundles: nsis
+            windowsConfig: "--config src-tauri/tauri.windows.release.generated.json"
+          - label: Linux x64 · DEB + AppImage
+            os: ubuntu-22.04
+            runtime: linux-x64
+            bundles: deb,appimage
+            windowsConfig: ""
+          - label: macOS · Apple Silicon
+            os: macos-latest
+            runtime: macos-arm64
+            bundles: dmg
+            windowsConfig: ""
+          - label: macOS · Intel
+            os: macos-15-intel
+            runtime: macos-x64
+            bundles: dmg
+            windowsConfig: ""
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Check out the published release tag
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.release.tag_name }}
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Linux Tauri dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            build-essential \
+            curl wget file \
+            libxdo-dev \
+            libssl-dev \
+            libdbus-1-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            patchelf xdg-utils
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prepare verified bundled Node runtime
+        run: npm run runtime:prepare -- --target ${{ matrix.runtime }}
+
+      - name: Configure optional Windows Authenticode signing
+        if: runner.os == 'Windows'
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+          WINDOWS_TIMESTAMP_URL: ${{ vars.WINDOWS_TIMESTAMP_URL }}
+        run: |
+          $out = "src-tauri/tauri.windows.release.generated.json"
+          if ($env:WINDOWS_CERTIFICATE -and $env:WINDOWS_CERTIFICATE_PASSWORD -and $env:WINDOWS_TIMESTAMP_URL) {
+            $pfx = Join-Path $env:RUNNER_TEMP "webforge-signing.pfx"
+            [IO.File]::WriteAllBytes($pfx, [Convert]::FromBase64String($env:WINDOWS_CERTIFICATE))
+            $password = ConvertTo-SecureString $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force
+            $cert = Import-PfxCertificate -FilePath $pfx -CertStoreLocation Cert:\CurrentUser\My -Password $password
+            if (-not $cert.Thumbprint) { throw "Unable to import Windows signing certificate" }
+            $config = @{ bundle = @{ windows = @{ certificateThumbprint = $cert.Thumbprint; digestAlgorithm = "sha256"; timestampUrl = $env:WINDOWS_TIMESTAMP_URL } } }
+            $config | ConvertTo-Json -Depth 8 | Set-Content -Encoding UTF8 $out
+            Write-Host "Windows signing enabled."
+          } else {
+            "{}" | Set-Content -Encoding UTF8 $out
+            Write-Host "Windows signing secrets are not configured; building an unsigned installer."
+          }
+
+      - name: Configure macOS signing
+        if: runner.os == 'macOS'
+        shell: bash
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          set -euo pipefail
+          if [ -n "${APPLE_CERTIFICATE:-}" ] && [ -n "${APPLE_CERTIFICATE_PASSWORD:-}" ]; then
+            CERTIFICATE_PATH="$RUNNER_TEMP/webforge.p12"
+            KEYCHAIN_PATH="$RUNNER_TEMP/webforge-signing.keychain-db"
+            KEYCHAIN_PASSWORD="$(openssl rand -hex 24)"
+            node -e 'require("node:fs").writeFileSync(process.argv[1], Buffer.from(process.env.APPLE_CERTIFICATE, "base64"))' "$CERTIFICATE_PATH"
+            security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+            security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+            security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+            security import "$CERTIFICATE_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+            security list-keychain -d user -s "$KEYCHAIN_PATH" login.keychain-db
+            security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+            IDENTITY="$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | awk -F\" 'NR==1 {print $2}')"
+            test -n "$IDENTITY"
+            echo "APPLE_SIGNING_IDENTITY=$IDENTITY" >> "$GITHUB_ENV"
+            echo "macOS Developer ID signing enabled."
+          else
+            echo "APPLE_SIGNING_IDENTITY=-" >> "$GITHUB_ENV"
+            echo "No Apple certificate configured; using Tauri ad-hoc signing."
+          fi
+
+      - name: Build and attach installer to the browser-created GitHub Release
+        uses: tauri-apps/tauri-action@action-v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+        with:
+          releaseId: ${{ github.event.release.id }}
+          tagName: ${{ github.event.release.tag_name }}
+          releaseDraft: false
+          prerelease: false
+          uploadUpdaterJson: false
+          releaseAssetNamePattern: "WebForge_[version]_[platform]_[arch][setup].[ext]"
+          args: "--config src-tauri/tauri.release.conf.json ${{ matrix.windowsConfig }} --bundles ${{ matrix.bundles }}"
+
+  verify-assets:
+    name: Verify attached release assets
+    needs: build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Check expected installer formats
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_ID: ${{ github.event.release.id }}
+        run: |
+          node <<'NODE'
+          const [owner, repo] = process.env.GITHUB_REPOSITORY.split("/");
+          const response = await fetch(`${process.env.GITHUB_API_URL}/repos/${owner}/${repo}/releases/${process.env.RELEASE_ID}`, {
+            headers: { authorization: `Bearer ${process.env.GITHUB_TOKEN}`, accept: "application/vnd.github+json" },
+          });
+          if (!response.ok) throw new Error(`GitHub release API failed: ${response.status}`);
+          const release = await response.json();
+          const names = release.assets.map((asset) => asset.name);
+          console.log(names.join("\n"));
+          const requireExt = (pattern, label, count = 1) => {
+            const found = names.filter((name) => pattern.test(name)).length;
+            if (found < count) throw new Error(`Missing ${label}; found ${found}, expected at least ${count}`);
+          };
+          requireExt(/\.exe$/i, "Windows installer");
+          requireExt(/\.deb$/i, "Linux DEB");
+          requireExt(/\.AppImage$/i, "Linux AppImage");
+          requireExt(/\.dmg$/i, "macOS DMGs", 2);
+          NODE
