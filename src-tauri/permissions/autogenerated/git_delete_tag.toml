@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-git-delete-tag"
+description = "Enables the git_delete_tag command without any pre-configured scope."
+commands.allow = ["git_delete_tag"]
+
+[[permission]]
+identifier = "deny-git-delete-tag"
+description = "Denies the git_delete_tag command without any pre-configured scope."
+commands.deny = ["git_delete_tag"]

@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-git-fetch-remote"
+description = "Enables the git_fetch_remote command without any pre-configured scope."
+commands.allow = ["git_fetch_remote"]
+
+[[permission]]
+identifier = "deny-git-fetch-remote"
+description = "Denies the git_fetch_remote command without any pre-configured scope."
+commands.deny = ["git_fetch_remote"]

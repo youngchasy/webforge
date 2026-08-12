@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-list-extension-templates"
+description = "Enables the list_extension_templates command without any pre-configured scope."
+commands.allow = ["list_extension_templates"]
+
+[[permission]]
+identifier = "deny-list-extension-templates"
+description = "Denies the list_extension_templates command without any pre-configured scope."
+commands.deny = ["list_extension_templates"]

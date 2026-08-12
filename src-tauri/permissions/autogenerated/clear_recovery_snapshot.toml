@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-clear-recovery-snapshot"
+description = "Enables the clear_recovery_snapshot command without any pre-configured scope."
+commands.allow = ["clear_recovery_snapshot"]
+
+[[permission]]
+identifier = "deny-clear-recovery-snapshot"
+description = "Denies the clear_recovery_snapshot command without any pre-configured scope."
+commands.deny = ["clear_recovery_snapshot"]

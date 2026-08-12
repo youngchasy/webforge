@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-close-all-terminal-sessions"
+description = "Enables the close_all_terminal_sessions command without any pre-configured scope."
+commands.allow = ["close_all_terminal_sessions"]
+
+[[permission]]
+identifier = "deny-close-all-terminal-sessions"
+description = "Denies the close_all_terminal_sessions command without any pre-configured scope."
+commands.deny = ["close_all_terminal_sessions"]

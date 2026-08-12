@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-execute-language-command"
+description = "Enables the execute_language_command command without any pre-configured scope."
+commands.allow = ["execute_language_command"]
+
+[[permission]]
+identifier = "deny-execute-language-command"
+description = "Denies the execute_language_command command without any pre-configured scope."
+commands.deny = ["execute_language_command"]

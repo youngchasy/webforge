@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-list-extension-components"
+description = "Enables the list_extension_components command without any pre-configured scope."
+commands.allow = ["list_extension_components"]
+
+[[permission]]
+identifier = "deny-list-extension-components"
+description = "Denies the list_extension_components command without any pre-configured scope."
+commands.deny = ["list_extension_components"]

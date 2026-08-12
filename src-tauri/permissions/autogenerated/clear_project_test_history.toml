@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-clear-project-test-history"
+description = "Enables the clear_project_test_history command without any pre-configured scope."
+commands.allow = ["clear_project_test_history"]
+
+[[permission]]
+identifier = "deny-clear-project-test-history"
+description = "Denies the clear_project_test_history command without any pre-configured scope."
+commands.deny = ["clear_project_test_history"]

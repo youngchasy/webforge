@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-delete-workspace-entry"
+description = "Enables the delete_workspace_entry command without any pre-configured scope."
+commands.allow = ["delete_workspace_entry"]
+
+[[permission]]
+identifier = "deny-delete-workspace-entry"
+description = "Denies the delete_workspace_entry command without any pre-configured scope."
+commands.deny = ["delete_workspace_entry"]

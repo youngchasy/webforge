@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-get-project-test-history"
+description = "Enables the get_project_test_history command without any pre-configured scope."
+commands.allow = ["get_project_test_history"]
+
+[[permission]]
+identifier = "deny-get-project-test-history"
+description = "Denies the get_project_test_history command without any pre-configured scope."
+commands.deny = ["get_project_test_history"]

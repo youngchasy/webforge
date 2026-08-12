@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-deploy-project"
+description = "Enables the deploy_project command without any pre-configured scope."
+commands.allow = ["deploy_project"]
+
+[[permission]]
+identifier = "deny-deploy-project"
+description = "Denies the deploy_project command without any pre-configured scope."
+commands.deny = ["deploy_project"]

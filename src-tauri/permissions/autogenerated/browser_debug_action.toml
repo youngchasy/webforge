@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-browser-debug-action"
+description = "Enables the browser_debug_action command without any pre-configured scope."
+commands.allow = ["browser_debug_action"]
+
+[[permission]]
+identifier = "deny-browser-debug-action"
+description = "Denies the browser_debug_action command without any pre-configured scope."
+commands.deny = ["browser_debug_action"]

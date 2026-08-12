@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-close-language-document"
+description = "Enables the close_language_document command without any pre-configured scope."
+commands.allow = ["close_language_document"]
+
+[[permission]]
+identifier = "deny-close-language-document"
+description = "Denies the close_language_document command without any pre-configured scope."
+commands.deny = ["close_language_document"]

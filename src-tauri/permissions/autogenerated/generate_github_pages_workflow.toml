@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-generate-github-pages-workflow"
+description = "Enables the generate_github_pages_workflow command without any pre-configured scope."
+commands.allow = ["generate_github_pages_workflow"]
+
+[[permission]]
+identifier = "deny-generate-github-pages-workflow"
+description = "Denies the generate_github_pages_workflow command without any pre-configured scope."
+commands.deny = ["generate_github_pages_workflow"]

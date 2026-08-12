@@ -1,0 +1,11 @@
+# Automatically generated - DO NOT EDIT!
+
+[[permission]]
+identifier = "allow-get-deploy-providers"
+description = "Enables the get_deploy_providers command without any pre-configured scope."
+commands.allow = ["get_deploy_providers"]
+
+[[permission]]
+identifier = "deny-get-deploy-providers"
+description = "Denies the get_deploy_providers command without any pre-configured scope."
+commands.deny = ["get_deploy_providers"]
